@@ -23,7 +23,7 @@ the template in the top comment
 */
 void print_matrix(struct matrix *m) {
 	for(int r = 0; r < m->rows; r++){
-		for(int c = 0; c < m->cols; c++){
+		for(int c = 0; c < m->lastcol; c++){
 			printf("%.2f ", m->m[r][c]);
 		}
 		printf("\n");
@@ -46,6 +46,7 @@ void ident(struct matrix *m) {
 			}
 		}
 	}
+	m->lastcol = m->cols;
 }
 
 

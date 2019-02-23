@@ -9,47 +9,66 @@
 
 int main() {
 
-  screen s;
-  color c;
+	screen s;
+	color c;
+	color g;
+	c.red = 255;
+	g.green = 255;
 
-  c.red = 255;
-  clear_screen(s);
+	clear_screen(s);
 
-  struct matrix * edges = new_matrix(4, 4);
+	struct matrix * edges = new_matrix(4, 4);
+	struct matrix * grid = new_matrix(4, 4);
 
-  add_edge(edges, 100, 100, 0, 250, 300, 0);
-  add_edge(edges, 250, 300, 0, 400, 100, 0);
-  add_edge(edges, 400, 100, 0, 100, 100, 0);
-  add_edge(edges, 175, 200, 0, 250, 225, 0);
-  add_edge(edges, 325, 200, 0, 250, 225, 0);
-
-  add_edge(edges, 175, 200, 0, 250, 175, 0);
-  add_edge(edges, 325, 200, 0, 250, 175, 0);
-
-  add_edge(edges, 250, 175, 0, 225, 200, 0);
-  add_edge(edges, 250, 225, 0, 225, 200, 0);
-  add_edge(edges, 250, 175, 0, 275, 200, 0);
-  add_edge(edges, 250, 225, 0, 275, 200, 0);
+	add_edge(edges, 200, 200, 0, 200, 300, 0);
+	add_edge(edges, 200, 300, 0, 300, 300, 0);
+	add_edge(edges, 300, 300, 0, 300, 200, 0);
+	add_edge(edges, 300, 200, 0, 200, 200, 0);
 
 
-  struct matrix * iden = new_matrix(4, 4);
-  ident(iden);
-  printf("Printing 4 x 4 identity matrix...\n");
-  print_matrix(iden);
+	add_edge(edges, 250, 350, 0, 150, 250, 0);
+	add_edge(edges, 150, 250, 0, 250, 150, 0);
+	add_edge(edges, 250, 150, 0, 350, 250, 0);
+	add_edge(edges, 350, 250, 0, 250, 350, 0);
 
-  printf("Printing edge matrix...\n");
-  print_matrix(edges);
+	add_edge(edges, 150, 150, 0, 350, 150, 0);
+	add_edge(edges, 350, 150, 0, 350, 350, 0);
+	add_edge(edges, 350, 350, 0, 150, 350, 0);
+	add_edge(edges, 150, 350, 0, 150, 150, 0);
 
-  printf("Multiplying identity matrix by edge matrix...(should have no effect)\n");
-  matrix_mult(iden, edges); // Should have no effect
+	add_edge(edges, 250, 50, 0, 450, 250, 0);
+	add_edge(edges, 250, 50, 0, 50, 250, 0);
+	add_edge(edges, 50, 250, 0, 250, 450, 0);
+	add_edge(edges, 250, 450, 0, 450, 250, 0);
 
-  printf("Printing new edge matrix...\n");
-  print_matrix(edges);
-  draw_lines(edges, s, c);
+	for(int r =1; r<10 ; r++){
+		add_edge(grid, r*50, 0, 0, r*50, 500, 0);
+		add_edge(grid,0, r*50, 0, 500,r*50, 0);
+	}
 
-  printf("Drawing lines from edge matrix...\n");
-  save_extension(s, "lines.png");
-  printf("Image saved to lines.png\n");
 
-  free_matrix( edges );
-}
+	struct matrix * iden = new_matrix(4, 4);
+	ident(iden);
+	printf("4 by 4 identity matrix:\n");
+	print_matrix(iden);
+	printf("\n");
+	printf("edges:\n");
+	print_matrix(edges);
+	printf("\n");
+	printf("Multiply by identity\n");
+  	matrix_mult(iden, edges); // Should have no effect
+  	printf("\n");
+  	printf("Printing first matrix...\n");
+  	print_matrix(edges);
+  	printf("Printing second matrix...\n");
+  	print_matrix(grid);
+  	draw_lines(edges, s, c);
+  	printf("Multiply first and second\n");
+  	matrix_mult(edges,grid);
+  	printf("Printing second\n");
+  	print_matrix(grid);
+  	free_matrix( edges );
+  	free_matrix( grid );
+  	display(s);
+	save_extension(s, "lines.png");
+  }
